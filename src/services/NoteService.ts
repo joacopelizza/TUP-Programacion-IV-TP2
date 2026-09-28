@@ -16,15 +16,11 @@ export class NoteServiceImpl implements NoteService {
   constructor(private readonly repo: NoteRepository) {}
 
   createNote(data: NewNote): Note {
-    // 1. Primero creamos la nota y la guardamos en una variable
     const note = this.repo.create(data);
 
-    // 2. Ahora chequeamos si la nota fue creada como "pinned"
     if (note.pinned) {
       notify(note);
     }
-
-    // 3. Finalmente devolvemos la nota
     return note;
   }
     // 🔴🟢 EJERCICIO 6 (a hacer más adelante, ustedes escriben el test):
