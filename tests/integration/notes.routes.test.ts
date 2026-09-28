@@ -77,3 +77,26 @@ describe('PATCH /notes/:id (Ejercicio 4)', () => {
     expect(res.body.error).toBe('ValidationError');
   });
 });
+
+// ej 5: DELETE /notes/:id
+describe('Rutas DELETE /notes/:id (Ejercicio 5)', () => {
+  let app: ReturnType<typeof makeApp>;
+
+  beforeEach(() => {
+    app = makeApp(':memory:');
+  });
+
+  it('DELETE /notes/:id debe eliminar la nota y devolver status 204', async () => {
+    const created = await request(app)
+      .post('/notes')
+      .send({ title: 'A borrar', content: 'Chao' });
+
+    const res = await request(app).delete(`/notes/${created.body.id}`);
+    expect(res.status).toBe(204);
+  });
+
+  it('DELETE /notes/:id debe responder 404 si la nota no existe', async () => {
+    const res = await request(app).delete('/notes/9999');
+    expect(res.status).toBe(404);
+  });
+});
