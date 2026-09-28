@@ -1,20 +1,20 @@
 import { test, expect } from '@playwright/test';
-import { resetDb } from './helpers';
+import { resetAndSeed } from './helpers';
 
 test.describe('Notes E2E Flow', () => {
-  test.beforeEach(async () => {
-    await resetDb();
-  });
+test.beforeEach(async () => {
+    await resetAndSeed('http://localhost:3000');
+});
 
-  test('Happy Path: should create a note and then list it', async ({ request }) => {
+test('Happy Path: should create a note and then list it', async ({ request }) => {
     const newNote = {
-      title: 'E2E Test Note',
-      content: 'This is a test content for E2E',
-      pinned: true
+    title: 'E2E Test Note',
+    content: 'This is a test content for E2E',
+    pinned: true
     };
 
     const createResponse = await request.post('/notes', {
-      data: newNote
+    data: newNote
     });
 
     expect(createResponse.ok()).toBeTruthy();
@@ -30,11 +30,11 @@ test.describe('Notes E2E Flow', () => {
     expect(found).toBeDefined();
     expect(found.title).toBe(newNote.title);
     expect(found.pinned).toBe(true);
-  });
+});
 
-  test('Error Case: should return 404 when getting a non-existent note', async ({ request }) => {
+test('Error Case: should return 404 when getting a non-existent note', async ({ request }) => {
     const response = await request.get('/notes/9999');
 
     expect(response.status()).toBe(404);
-  });
+});
 });
