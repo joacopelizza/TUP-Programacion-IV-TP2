@@ -41,7 +41,8 @@ export class NoteServiceImpl implements NoteService {
   getNote(id: number): Note | undefined {
     // 🔴🟢 EJERCICIO 3: ciclo completo (test + implementación).
     console.log('getNote: id =', id);
-    
+    const note = this.repo.findById(id);
+    return note;
   }
 
   updateNote(id: number, patch: NotePatch): Note | undefined {
